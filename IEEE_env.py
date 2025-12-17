@@ -215,7 +215,6 @@ class myenv:
         # Reward
         self.last_reward = (
             total_solar / self.BASE
-            - (power_negative * self.lambda1 / self.BASE)
             - (ramping_cost * self.lambda2)
         )
 
@@ -336,9 +335,8 @@ class myenv:
         # 计算reward
         reward = (
             total_solar / self.BASE
-            + (power_negative * self.lambda1 / self.BASE)
             - (ramping_cost * self.lambda2)
-            - bad_percentage * 5
+            - bad_percentage * 5 * self.lambda1
         )
         info = [
             np.sum(solar),
