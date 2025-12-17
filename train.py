@@ -158,8 +158,8 @@ class MAPPO:
             num_agents=num_agents,
             edge_index=self.edge_index,
         ).to(device)
-        self.optimizer_actor = optim.Adam(self.actor.parameters(), lr=1e-4)
-        self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=3e-4)
+        self.optimizer_actor = optim.Adam(self.actor.parameters(), lr=system_args.lr_actor)
+        self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=system_args.lr_critic)
         self.Meta_buffer = []
         self.sample_step = system_args.sample_step
         self.n_episodes = system_args.n_episode
@@ -422,6 +422,8 @@ if __name__ == "__main__":
     argparser.add_argument("--sample_step", type=int, default=16)
     argparser.add_argument("--n_epoch", type=int, default=10)
     argparser.add_argument("--n_iter", type=int, default=100)
+    argparser.add_argument("--lr_actor", type=float, default=1e-4)
+    argparser.add_argument("--lr_critic", type=float, default=3e-4)
     argparser.add_argument("--lambda1", type=float, default=1)
     argparser.add_argument("--lambda2", type=float, default=1)
     argparser.add_argument("--use_wandb", action="store_true")
