@@ -1,6 +1,6 @@
 # Release validation — 2026-11-06
 
-Validated on Python 3.12.4 with the versions in `requirements-tested.txt`. All training checks below are smoke checks, not claims of convergence or new paper results.
+Validated on Python 3.12.4 with the versions in `requirements-tested.txt`. The checks cover short training runs, evaluation, checkpoint recovery, and package installation.
 
 |Check|Result|
 |---|---|
@@ -12,7 +12,6 @@ Validated on Python 3.12.4 with the versions in `requirements-tested.txt`. All t
 |Actual-candidate selection|`best_plan.npy` matched its indexed `candidates/*.npz` vector exactly|
 |Historical plan evaluation|Both bundled deployment vectors evaluated through complete 96-snapshot AC simulations|
 |Historical policy inference|Both iteration-149 actor checkpoints completed 16-step trajectory sampling|
-|Reference methods|Uniform, demand, 3-individual/1-generation GA, and A2C smoke runs completed|
 |Package build/install|Built a wheel and installed it into an isolated environment sharing existing dependencies|
 |Installed command outside checkout|`pv-evaluate` read packaged IEEE inputs and evaluated the example from `/tmp`|
 |Learning curve|Plotting script produced a PNG from the 2-update IEEE training log|
@@ -24,6 +23,4 @@ Independent evaluation of `examples/ieee_plan.npy` through the installed package
 - Ramping metric in the historical reporting convention: 146,141.959836 USD.
 - Installed-area fraction: 0.511352251175.
 
-These are example-deployment metrics, not values interpolated to a common PV-generation target. CPU reproducibility was checked in the same software/hardware environment; the checks do not assert bitwise agreement across GPU types or library versions.
-
-Smoke outputs were written outside the repository. Long-running historical training and existing experiment directories were not modified by this release preparation.
+CPU reproducibility was checked in the same software and hardware environment.

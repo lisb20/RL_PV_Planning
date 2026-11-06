@@ -1,7 +1,6 @@
 """Train the shared GCN/IPPO planning policy on IEEE-300 or Beijing.
 
-Rollouts retain full graphs; minibatches are joint planning steps, not individual
-nodes. The optional A2C adaptation shares the same architecture and environment.
+Rollouts retain full graphs; minibatches consist of joint planning steps.
 """
 import argparse
 from concurrent.futures import ProcessPoolExecutor
@@ -97,8 +96,7 @@ def update(actor, critic, optim_actor, optim_critic, batch, args, iteration):
     device = next(actor.parameters()).device
     n = data["obs"].shape[1]
     losses = []
-    epochs = args.epochs if args.algorithm == "ippo" else 1
-    for _ in range(epochs):
+    for _ in range(args.epochs):
         order = torch.randperm(len(data["obs"]))
         for start in range(0, len(order), args.batch_size):
             idx = order[start:start + args.batch_size]
@@ -107,24 +105,17 @@ def update(actor, critic, optim_actor, optim_critic, batch, args, iteration):
             mean, std = actor.act(actor.get_graph_embedding(b["obs"]), agent_idx)
             dist = Normal(mean, std)
             logp = (dist.log_prob(b["actions"]) - torch.log(1 - b["actions"].tanh().square() + 1e-6)).sum(-1)
-            if args.algorithm == "ippo":
-                ratio = (logp - b["logp"]).exp()
-                surrogate = torch.minimum(ratio * b["adv"], ratio.clamp(0.8, 1.2) * b["adv"])
-                loss_actor = -surrogate.mean()
-            else:
-                loss_actor = -(logp * b["adv"]).mean()
+            ratio = (logp - b["logp"]).exp()
+            surrogate = torch.minimum(ratio * b["adv"], ratio.clamp(0.8, 1.2) * b["adv"])
+            loss_actor = -surrogate.mean()
             # Preserve the historical linear entropy warm-up.
-            entropy_scale = iteration / args.iterations if args.algorithm == "ippo" else 1.0
-            loss_actor -= args.entropy_weight * entropy_scale * dist.entropy().mean()
+            loss_actor -= args.entropy_weight * iteration / args.iterations * dist.entropy().mean()
             optim_actor.zero_grad()
             loss_actor.backward()
             optim_actor.step()
             value = critic(critic.get_graph_embedding(b["obs"]), agent_idx)
-            if args.algorithm == "ippo":
-                clipped = b["values"] + (value - b["values"]).clamp(-0.2, 0.2)
-                loss_critic = torch.maximum((value - b["returns"]).square(), (clipped - b["returns"]).square()).mean()
-            else:
-                loss_critic = (value - b["returns"]).square().mean()
+            clipped = b["values"] + (value - b["values"]).clamp(-0.2, 0.2)
+            loss_critic = torch.maximum((value - b["returns"]).square(), (clipped - b["returns"]).square()).mean()
             optim_critic.zero_grad()
             loss_critic.backward()
             optim_critic.step()
@@ -139,7 +130,6 @@ def cpu_state(model):
 def parser():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--grid", choices=["ieee", "beijing"], default="ieee")
-    p.add_argument("--algorithm", choices=["ippo", "a2c"], default="ippo")
     p.add_argument("--iterations", "--n_iter", type=int, default=300)
     p.add_argument("--rollouts", "--n_episode", type=int, default=128)
     p.add_argument("--steps", "--sample_step", type=int, default=16)
@@ -178,9 +168,9 @@ def main():
     critic.to(args.device)
     optim_actor = torch.optim.Adam(actor.parameters(), lr=args.lr_actor)
     optim_critic = torch.optim.Adam(critic.parameters(), lr=args.lr_critic)
-    config = vars(args).copy()
+    config = {"algorithm": "ippo", **vars(args)}
     config = {k: str(v) if isinstance(v, Path) else v for k, v in config.items()}
-    out = args.output or (args.resume.parent if args.resume else Path("runs") / f"{args.grid}_{args.algorithm}_{datetime.now():%Y%m%d_%H%M%S}")
+    out = args.output or (args.resume.parent if args.resume else Path("runs") / f"{args.grid}_ippo_{datetime.now():%Y%m%d_%H%M%S}")
     if args.resume and out.resolve() != args.resume.resolve().parent:
         raise ValueError("Resume in the original output folder to retain candidate provenance")
     if (out / "config.json").exists() and not args.resume:

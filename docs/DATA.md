@@ -18,7 +18,7 @@ MATPOWER case source: https://github.com/MATPOWER/matpower/blob/master/data/case
 
 The Beijing input was taken from the pre-existing `Release-bej` dataset. As in its training script, lines whose endpoints have facility prefixes below 5 and points with prefixes below 5 are retained (2,675 records). This removes unused lower-level geometry. Compression is lossless. The demand matrix is unchanged. Roof areas are converted to JSON without changing the numeric values. Facility prefix constants are included locally, removing the runtime dependency on the internal city-protocol package.
 
-The Beijing topology is synthetic and spatially grounded. This release bundles simulator-ready aggregates, not the complete raw GABLE building collection or city data-preprocessing pipeline. The representative PV and load templates do not contain a calendar or establish an annual seasonal dataset.
+The Beijing topology is synthetic and spatially grounded. The bundled inputs provide network topology, node-level demand, rooftop suitability, and a representative PV generation profile.
 
 Original source locations used to prepare this release:
 
@@ -27,4 +27,4 @@ Original source locations used to prepare this release:
 - Beijing area mapping: `BEJ/flow/trans110_2_area.pkl`.
 - Historical deployment examples: the May 19 IEEE and May 21 18:52:50 Beijing folders recorded in `examples/provenance.json`.
 
-Existing upstream data and software terms continue to apply. This repository update does not relicense third-party materials.
+Existing upstream data and software terms continue to apply.
