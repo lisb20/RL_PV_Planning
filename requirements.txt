@@ -1,0 +1,8 @@
+numpy>=1.24,<2
+scipy>=1.10
+torch>=2.2
+torch-geometric>=2.5
+PYPOWER>=5.1.16
+PyYAML>=6
+pyproj>=3.5
+shapely>=2

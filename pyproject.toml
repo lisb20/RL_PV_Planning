@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rl-pv-planning"
+version = "0.1.0"
+description = "Grid-aware multi-agent reinforcement learning for rooftop PV planning"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24,<2", "scipy>=1.10", "torch>=2.2", "torch-geometric>=2.5", "PYPOWER>=5.1.16", "PyYAML>=6", "pyproj>=3.5", "shapely>=2"]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7"]
+
+[project.scripts]
+pv-train = "pv_planning.train:main"
+pv-evaluate = "pv_planning.evaluate:main"
+
+[tool.setuptools.packages.find]
+include = ["pv_planning*"]
+
+[tool.setuptools.package-data]
+pv_planning = ["data/*.mat", "data/*.npy", "data/*.yaml", "data/*.json", "data/beijing/*"]

@@ -1,0 +1,10 @@
+{
+  "pv_planning/data/beijing/config.yaml": "44f29643334183fa34186f615882fae0037e85cfdd5975e8807562066b43892a",
+  "pv_planning/data/beijing/grid.json.gz": "a239c88debad7a7f2e4b9548ba1de2b39310937e2d495a9db64348500dcfd452",
+  "pv_planning/data/beijing/power_map0221.npy": "dc7d08688a4122a00f5c49ad89a2a23543251e8788334a21332d47cfb0063bcc",
+  "pv_planning/data/beijing/roof_areas.json": "8e293967f734a4be2a063ce0561766898cdd749a9b040015b6069fc59a585b2d",
+  "pv_planning/data/case300.mat": "28a4948c4ad79e25897d9be4a84558d35fa9a5fb6efe9ee368330b4681710e9e",
+  "pv_planning/data/config.yaml": "44f29643334183fa34186f615882fae0037e85cfdd5975e8807562066b43892a",
+  "pv_planning/data/power_2class.mat": "7a476fa679de80a4f539e206ee177a9af281aa682da399fd535f294ee36a08e3",
+  "pv_planning/data/solarbej.npy": "92cdf2ea9d5811cb9dfa212bf9f68cd29f9c80dd8adc5bb478502cd05719a578"
+}

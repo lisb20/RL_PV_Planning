@@ -1,0 +1,24 @@
+{
+  "ieee": {
+    "source_directory": "IEEE/ckpt/2025-05-19 10:07:30",
+    "source_plan_sha256": "926aabe85f8ee9936825150e97c4ec51f7b74177d1cd82775c9cad3104fa8dea",
+    "processing": "reshape(-1), clip to [0, 1] before evaluation",
+    "changed_entries": 24,
+    "policy_source_files": [
+      "actor_149.pth",
+      "critic_149.pth"
+    ],
+    "policy_note": "Final historical policy weights; the saved deployment is a separately selected artifact."
+  },
+  "beijing": {
+    "source_directory": "BEJ/ckpt/2025-05-21 18:52:50",
+    "source_plan_sha256": "466d25780188b09b0206492a2b403aedafe7c23e7241b55c049733c104a10f46",
+    "processing": "reshape(-1), clip to [0, 1] before evaluation",
+    "changed_entries": 35,
+    "policy_source_files": [
+      "actor_149.pth",
+      "critic_149.pth"
+    ],
+    "policy_note": "Final historical policy weights; the saved deployment is a separately selected artifact."
+  }
+}

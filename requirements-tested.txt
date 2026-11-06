@@ -1,0 +1,9 @@
+# Versions used in the local release validation; PyTorch CUDA 12.4 build.
+numpy==1.26.4
+scipy==1.14.0
+torch==2.6.0
+torch-geometric==2.6.1
+PYPOWER==5.1.16
+PyYAML==6.0.2
+pyproj==3.6.1
+shapely==2.0.7

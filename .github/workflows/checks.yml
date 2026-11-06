@@ -1,0 +1,15 @@
+name: checks
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -e .
+      - run: python -m unittest discover -s tests -v
+      - run: python -m pv_planning.train --grid ieee --iterations 1 --rollouts 1 --steps 1 --epochs 1 --output /tmp/ieee-smoke
+      - run: python -m pv_planning.evaluate --grid ieee --plan /tmp/ieee-smoke/best_plan.npy --output /tmp/ieee-evaluation

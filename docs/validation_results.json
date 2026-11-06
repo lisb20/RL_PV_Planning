@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-06",
+  "core_tests": 3,
+  "cpu_resume_exact": true,
+  "cpu_parallel_exact": true,
+  "best_plan_archive_exact": true,
+  "ieee_training_updates": 2,
+  "beijing_training_updates": 1,
+  "beijing_workers": 2,
+  "historical_policy_inference": [
+    "ieee",
+    "beijing"
+  ],
+  "wheel_install_outside_checkout": true
+}
